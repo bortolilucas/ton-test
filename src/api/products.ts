@@ -1,41 +1,44 @@
 import axiosApi from './axiosApi';
 import { Endpoints } from './constants';
 
-type ProductType = {
+export type ProductType = {
   id: number;
   title: string;
   price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
+  description?: string;
+  category?: string;
+  image?: string;
+  rating?: {
     rate: number;
     count: number;
   };
+  empty?: boolean;
 };
 
-type FetchProductsParamsType = {
+export type FetchProductsParamsType = {
   page: number;
+  limit?: number;
 };
 
-type FetchProductsResponseType = {
+export type FetchProductsResponseType = {
   products?: ProductType[];
   previous?: number;
   current?: number;
   next?: number;
   limit?: number;
-  errorMessage?: string;
 };
 
-export const fetchProducts = async (params: FetchProductsParamsType) => {
+export const fetchProducts = async (
+  params: FetchProductsParamsType,
+): Promise<FetchProductsResponseType> => {
   try {
     const response = await axiosApi.get<FetchProductsResponseType>(
       Endpoints.PRODUCTS,
       { params },
     );
 
-    return Promise.resolve(response);
-  } catch (error: unknown) {
-    return Promise.reject({ errorMessage: (error as Error).message });
+    return Promise.resolve(response.data);
+  } catch (error: any) {
+    return Promise.reject(error.message);
   }
 };

@@ -1,3 +1,8 @@
 export enum Colors {
-  BACKGROUND = '#f9f7f3',
+  BACKGROUND = '#ebebef',
+  TEXT = '#1c1c1c',
+  LIGHT_TEXT = '#666',
+  LIGHT_ICON = '#a7a7a7',
+  WHITE = '#FFF',
+  TRANSPARENT = '#ffffff00',
 }
