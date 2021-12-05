@@ -1,6 +1,7 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import LoadingProvider from '../../contexts/LoadingContext/provider';
 import ProductsList from '../../screens/products/ProductsList';
 
 export type RootStackParamsList = {
@@ -12,9 +13,15 @@ const Stack = createNativeStackNavigator<RootStackParamsList>();
 const RootStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="ProductsList" component={ProductsList} />
-      </Stack.Navigator>
+      <LoadingProvider>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="ProductsList"
+            component={ProductsList}
+            options={{ title: 'Produtos' }}
+          />
+        </Stack.Navigator>
+      </LoadingProvider>
     </NavigationContainer>
   );
 };
