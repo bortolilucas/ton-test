@@ -1,12 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import RootStack from './navigation/RootStack';
 
 const App = () => {
-  return (
-    <View>
-      <Text></Text>
-    </View>
-  );
+  return <RootStack />;
 };
 
 export default App;
