@@ -1,0 +1,7 @@
+@baseUrl = https://tontest-server.herokuapp.com/api
+
+###
+
+GET {{baseUrl}}/products HTTP/2.0
+Accept: application/json
+Content-Type: application/json
