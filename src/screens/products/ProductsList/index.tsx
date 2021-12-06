@@ -17,6 +17,7 @@ import ProductListItem from '../../../components/products/ProductListItem';
 import ProductsSearchInput from '../../../components/products/ProductsSearchInput';
 import { Colors } from '../../../constants/colors';
 import { isOdd } from '../../../helpers/util';
+import useCart from '../../../hooks/useCart';
 import useLoading from '../../../hooks/useLoading';
 import styles from './styles';
 
@@ -24,6 +25,7 @@ type FetchDataMode = 'pagination' | 'refresh' | undefined;
 
 const ProductsList = () => {
   const { setLoading } = useLoading();
+  const { addItem, removeItem, items } = useCart();
   const { bottom } = useSafeAreaInsets();
   const [data, setData] = useState<FetchProductsResponseType>({});
   const [loadingPage, setLoadingPage] = useState(false);
@@ -119,7 +121,14 @@ const ProductsList = () => {
           <Text style={styles.title}>Adicione itens ao carrinho</Text>
         </>
       }
-      renderItem={({ item }) => <ProductListItem item={item} />}
+      renderItem={({ item }) => (
+        <ProductListItem
+          item={item}
+          addItem={addItem}
+          removeItem={removeItem}
+          qtd={items.get(item.id)?.qtd}
+        />
+      )}
       ListFooterComponent={
         loadingPage ? (
           <ActivityIndicator

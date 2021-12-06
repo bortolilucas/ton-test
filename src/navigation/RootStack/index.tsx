@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { Colors } from '../../constants/colors';
+import CartProvider from '../../contexts/CartContext/provider';
 import LoadingProvider from '../../contexts/LoadingContext/provider';
 import ProductsList from '../../screens/products/ProductsList';
 
@@ -26,16 +27,18 @@ const RootStack = () => {
         dark: false,
       }}>
       <LoadingProvider>
-        <Stack.Navigator
-          screenOptions={{
-            headerShadowVisible: false,
-          }}>
-          <Stack.Screen
-            name="ProductsList"
-            component={ProductsList}
-            options={{ title: 'Produtos' }}
-          />
-        </Stack.Navigator>
+        <CartProvider>
+          <Stack.Navigator
+            screenOptions={{
+              headerShadowVisible: false,
+            }}>
+            <Stack.Screen
+              name="ProductsList"
+              component={ProductsList}
+              options={{ title: 'Produtos' }}
+            />
+          </Stack.Navigator>
+        </CartProvider>
       </LoadingProvider>
     </NavigationContainer>
   );
