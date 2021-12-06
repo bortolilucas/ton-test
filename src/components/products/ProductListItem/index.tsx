@@ -30,11 +30,9 @@ const ProductListItem = ({ item }: Props) => {
       <Text numberOfLines={2} style={styles.title}>
         {item.title}
       </Text>
-      <View style={styles.rowPrice}>
-        <Text style={styles.price}>{formatCurrency(item.price)}</Text>
-        <View style={styles.addButton}>
-          <EntypoIcon name="plus" color={Colors.WHITE} size={18} />
-        </View>
+      <Text style={styles.price}>{formatCurrency(item.price)}</Text>
+      <View style={styles.addButton}>
+        <Text style={styles.addButtonText}>Adicionar</Text>
       </View>
     </Pressable>
   );
