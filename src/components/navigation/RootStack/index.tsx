@@ -34,6 +34,7 @@ const RootStack = () => {
           screenOptions={{
             headerShadowVisible: false,
             headerBackTitleVisible: false,
+            headerTitleAlign: 'center',
             headerLeft: props => <BackButton {...props} />,
             headerRight: () => <CartButton />,
           }}>
