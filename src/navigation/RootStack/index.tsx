@@ -4,6 +4,7 @@ import React from 'react';
 import { Colors } from '../../constants/colors';
 import CartProvider from '../../contexts/CartContext/provider';
 import ProductsList from '../../screens/products/ProductsList';
+import CartButton from '../CartButton';
 
 export type RootStackParamsList = {
   ProductsList: undefined;
@@ -33,7 +34,10 @@ const RootStack = () => {
           <Stack.Screen
             name="ProductsList"
             component={ProductsList}
-            options={{ title: 'Produtos' }}
+            options={{
+              title: 'Produtos',
+              headerRight: () => <CartButton />,
+            }}
           />
         </Stack.Navigator>
       </CartProvider>

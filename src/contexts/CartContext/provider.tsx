@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { Alert } from 'react-native';
-import { CartContext, CartItemType } from '.';
+import { CartContext, CartContextType, CartItemType } from '.';
 
 import type { ProductType } from '../../api';
 
@@ -46,15 +46,19 @@ const CartProvider: React.FC = ({ children }) => {
     [],
   );
 
-  const value = useMemo(
-    () => ({
+  const value: CartContextType = useMemo(() => {
+    let qtdTotal = 0;
+
+    items.forEach(({ qtd }) => (qtdTotal += qtd));
+
+    return {
       items,
       setItems,
       addItem,
       removeItem,
-    }),
-    [addItem, items, removeItem],
-  );
+      qtdTotal,
+    };
+  }, [addItem, items, removeItem]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

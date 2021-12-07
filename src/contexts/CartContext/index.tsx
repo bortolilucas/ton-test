@@ -15,6 +15,7 @@ export type CartContextType = {
   setItems: (items: Map<number, CartItemType>) => void;
   addItem: AddItemType;
   removeItem: RemoveItemType;
+  qtdTotal: number;
 };
 
 export const CartContext = createContext<CartContextType>({
@@ -22,4 +23,5 @@ export const CartContext = createContext<CartContextType>({
   setItems: () => {},
   addItem: () => {},
   removeItem: () => {},
+  qtdTotal: 0,
 });
