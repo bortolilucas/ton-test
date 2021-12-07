@@ -1,21 +1,27 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { CartContext, CartContextType, CartItemType, RemoveItemType } from '.';
-
 import type { ProductType } from '../../api';
+import usePersistentState from '../../hooks/usePersistentState';
 
 const CartProvider: React.FC = ({ children }) => {
-  const [items, setItems] = useState<{ [key: string]: CartItemType }>({});
+  const [items, setItems] = usePersistentState<{ [key: string]: CartItemType }>(
+    'cartItems',
+    {},
+  );
 
-  const addItem = useCallback((newItem: ProductType) => {
-    setItems(values => ({
-      ...values,
-      [newItem.id]: {
-        item: newItem,
-        qtd: (values[newItem.id]?.qtd || 0) + 1,
-      },
-    }));
-  }, []);
+  const addItem = useCallback(
+    (newItem: ProductType) => {
+      setItems(values => ({
+        ...values,
+        [newItem.id]: {
+          item: newItem,
+          qtd: (values[newItem.id]?.qtd || 0) + 1,
+        },
+      }));
+    },
+    [setItems],
+  );
 
   const removeItem: RemoveItemType = useCallback(
     (id: number, { ignoreQtd = false } = {}) => {
@@ -38,7 +44,7 @@ const CartProvider: React.FC = ({ children }) => {
         return newValues;
       });
     },
-    [],
+    [setItems],
   );
 
   const value: CartContextType = useMemo(() => {
@@ -52,7 +58,7 @@ const CartProvider: React.FC = ({ children }) => {
       removeItem,
       qtdTotal: itemsArray.reduce((acc, cur) => acc + cur.qtd, 0),
     };
-  }, [addItem, items, removeItem]);
+  }, [addItem, items, removeItem, setItems]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
