@@ -3,8 +3,8 @@ import type { HeaderBackButtonProps } from '@react-navigation/elements';
 import React from 'react';
 import { Pressable } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Colors } from '../../constants/colors';
-import { withOpacityStyle } from '../../helpers/ui';
+import { Colors } from '../../../constants/colors';
+import { withOpacityStyle } from '../../../helpers/ui';
 import styles from './styles';
 
 const BackButton = ({ canGoBack }: HeaderBackButtonProps) => {

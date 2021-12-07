@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { generateShadow } from 'react-native-shadow-generator';
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../constants/colors';
 
 export default StyleSheet.create({
   cartButton: {

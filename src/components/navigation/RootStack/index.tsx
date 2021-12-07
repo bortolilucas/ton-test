@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { Colors } from '../../constants/colors';
-import CartProvider from '../../contexts/CartContext/provider';
-import CartScreen from '../../screens/cart/CartScreen';
-import ProductsListScreen from '../../screens/products/ProductsListScreen';
+import { Colors } from '../../../constants/colors';
+import CartProvider from '../../../contexts/CartContext/provider';
 import BackButton from '../BackButton';
 import CartButton from '../CartButton';
+import ProductsListScreen from '../../../screens/products/ProductsListScreen';
+import CartScreen from '../../../screens/cart/CartScreen';
 
 export type RootStackParamsList = {
   ProductsList: undefined;
