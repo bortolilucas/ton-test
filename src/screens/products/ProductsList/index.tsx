@@ -5,32 +5,43 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ActivityIndicator, Alert, FlatList, Text } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import FeatherIcon from 'react-native-vector-icons/Ionicons';
 import type {
   FetchProductsParamsType,
   FetchProductsResponseType,
   ProductType,
 } from '../../../api';
 import * as Api from '../../../api';
+import LoadingIndicator from '../../../components/common/LoadingIndicator';
 import ProductListItem from '../../../components/products/ProductListItem';
-import ProductsSearchInput from '../../../components/products/ProductsSearchInput';
 import { Colors } from '../../../constants/colors';
+import { withOpacityStyle } from '../../../helpers/ui';
 import { isOdd } from '../../../helpers/util';
 import useCart from '../../../hooks/useCart';
-import useLoading from '../../../hooks/useLoading';
 import styles from './styles';
 
 type FetchDataMode = 'pagination' | 'refresh' | undefined;
 
 const ProductsList = () => {
-  const { setLoading } = useLoading();
   const { addItem, removeItem, items } = useCart();
   const { bottom } = useSafeAreaInsets();
   const [data, setData] = useState<FetchProductsResponseType>({});
+  const [loading, setLoading] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const fetching = useRef(false);
+  const searchValue = useRef('');
+  const searchRef = useRef<TextInput | null>(null);
 
   const derivedProducts = useMemo(() => {
     if (!data.products) {
@@ -42,18 +53,15 @@ const ProductsList = () => {
       : data.products;
   }, [data.products]);
 
-  const updateLoading = useCallback(
-    (value: boolean, mode?: FetchDataMode) => {
-      mode === 'pagination'
-        ? setLoadingPage(value)
-        : mode === 'refresh'
-        ? setRefreshing(value)
-        : setLoading(value);
+  const updateLoading = (value: boolean, mode?: FetchDataMode) => {
+    mode === 'pagination'
+      ? setLoadingPage(value)
+      : mode === 'refresh'
+      ? setRefreshing(value)
+      : setLoading(value);
 
-      fetching.current = value;
-    },
-    [setLoading],
-  );
+    fetching.current = value;
+  };
 
   const updateData = (
     response: FetchProductsResponseType,
@@ -69,7 +77,7 @@ const ProductsList = () => {
 
   const fetchData = useCallback(
     async (
-      { page = 1, limit = 10 }: Partial<FetchProductsParamsType> = {},
+      { page = 1, search }: Partial<FetchProductsParamsType> = {},
       mode?: FetchDataMode,
     ) => {
       if (fetching.current) {
@@ -79,7 +87,7 @@ const ProductsList = () => {
       try {
         updateLoading(true, mode);
 
-        const response = await Api.fetchProducts({ page, limit });
+        const response = await Api.fetchProducts({ page, search });
 
         updateData(response, mode);
       } catch (error: any) {
@@ -88,7 +96,7 @@ const ProductsList = () => {
         updateLoading(false, mode);
       }
     },
-    [updateLoading],
+    [],
   );
 
   const onEndReached = () => {
@@ -101,9 +109,23 @@ const ProductsList = () => {
 
   const onRefresh = () => fetchData({}, 'refresh');
 
+  const onSearchSubmit = () =>
+    fetchData({ search: searchValue.current }, 'refresh');
+
+  const onChangeSearch = (text: string) => (searchValue.current = text);
+
+  const onSearchClear = () => {
+    onRefresh();
+    searchRef.current?.setNativeProps({ text: '' });
+  };
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <FlatList
@@ -117,8 +139,32 @@ const ProductsList = () => {
       ]}
       ListHeaderComponent={
         <>
-          <ProductsSearchInput />
-          <Text style={styles.title}>Adicione itens ao carrinho</Text>
+          <View style={styles.containerInput}>
+            <Pressable
+              onPress={onSearchSubmit}
+              style={withOpacityStyle(styles.searchButton)}>
+              <FeatherIcon name="search" color={Colors.LIGHT_ICON} size={20} />
+            </Pressable>
+            <TextInput
+              ref={searchRef}
+              style={styles.input}
+              placeholder="Pesquisar..."
+              placeholderTextColor={Colors.TEXT}
+              onChangeText={onChangeSearch}
+              onSubmitEditing={onSearchSubmit}
+              returnKeyType="search"
+            />
+            <Pressable
+              onPress={onSearchClear}
+              style={withOpacityStyle(styles.clearButton)}>
+              <FeatherIcon name="close" color={Colors.LIGHT_ICON} size={23} />
+            </Pressable>
+          </View>
+          <Text style={styles.title}>
+            {derivedProducts.length === 0
+              ? 'Nenhum item encontrado'
+              : 'Adicione itens ao carrinho'}
+          </Text>
         </>
       }
       renderItem={({ item }) => (

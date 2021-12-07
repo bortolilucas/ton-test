@@ -18,6 +18,7 @@ export type ProductType = {
 export type FetchProductsParamsType = {
   page: number;
   limit?: number;
+  search?: string;
 };
 
 export type FetchProductsResponseType = {
