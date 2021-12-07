@@ -3,11 +3,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { Colors } from '../../constants/colors';
 import CartProvider from '../../contexts/CartContext/provider';
-import ProductsList from '../../screens/products/ProductsList';
+import CartScreen from '../../screens/cart/CartScreen';
+import ProductsListScreen from '../../screens/products/ProductsListScreen';
+import BackButton from '../BackButton';
 import CartButton from '../CartButton';
 
 export type RootStackParamsList = {
   ProductsList: undefined;
+  Cart: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -30,13 +33,22 @@ const RootStack = () => {
         <Stack.Navigator
           screenOptions={{
             headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerLeft: props => <BackButton {...props} />,
+            headerRight: () => <CartButton />,
           }}>
           <Stack.Screen
             name="ProductsList"
-            component={ProductsList}
+            component={ProductsListScreen}
             options={{
               title: 'Produtos',
-              headerRight: () => <CartButton />,
+            }}
+          />
+          <Stack.Screen
+            name="Cart"
+            component={CartScreen}
+            options={{
+              title: 'Carrinho',
             }}
           />
         </Stack.Navigator>
