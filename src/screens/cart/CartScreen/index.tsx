@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CartItem from '../../../components/cart/CartItem';
+import Title from '../../../components/common/Title';
 import type { CartItemType } from '../../../contexts/CartContext';
 import useCart from '../../../hooks/useCart';
 import styles from './styles';
@@ -19,11 +20,11 @@ const CartScreen = () => {
         { paddingBottom: bottom },
       ]}
       ListHeaderComponent={
-        <Text style={styles.title}>
+        <Title style={styles.title}>
           {qtdTotal > 0
             ? `${qtdTotal} produtos adicionados`
             : 'Nenhum produto adicionado'}
-        </Text>
+        </Title>
       }
       renderItem={({ item }) => (
         <CartItem item={item} addItem={addItem} removeItem={removeItem} />

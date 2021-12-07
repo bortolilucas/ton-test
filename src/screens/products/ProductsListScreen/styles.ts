@@ -9,11 +9,7 @@ export default StyleSheet.create({
     marginHorizontal: -12,
   },
   title: {
-    color: Colors.TEXT,
-    fontSize: 21,
-    fontWeight: 'bold',
     marginBottom: 5,
-    letterSpacing: 0.5,
   },
   activityIndicatorPage: {
     marginTop: 10,

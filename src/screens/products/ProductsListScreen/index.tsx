@@ -10,7 +10,6 @@ import {
   Alert,
   FlatList,
   Pressable,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -23,6 +22,7 @@ import type {
 } from '../../../api';
 import * as Api from '../../../api';
 import LoadingIndicator from '../../../components/common/LoadingIndicator';
+import Title from '../../../components/common/Title';
 import ProductListItem from '../../../components/products/ProductListItem';
 import { Colors } from '../../../constants/colors';
 import { withOpacityStyle } from '../../../helpers/ui';
@@ -160,11 +160,11 @@ const ProductsList = () => {
               <FeatherIcon name="close" color={Colors.LIGHT_ICON} size={23} />
             </Pressable>
           </View>
-          <Text style={styles.title}>
+          <Title style={styles.title}>
             {derivedProducts.length === 0
               ? 'Nenhum item encontrado'
               : 'Adicione itens ao carrinho'}
-          </Text>
+          </Title>
         </>
       }
       renderItem={({ item }) => (
