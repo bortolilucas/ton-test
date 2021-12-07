@@ -3,7 +3,6 @@ import { Colors } from '../../../constants/colors';
 
 export default StyleSheet.create({
   flatListContent: {
-    flexGrow: 1,
     paddingHorizontal: 25,
   },
   columnWrapper: {
@@ -11,7 +10,7 @@ export default StyleSheet.create({
   },
   title: {
     color: Colors.TEXT,
-    fontSize: 23,
+    fontSize: 21,
     fontWeight: 'bold',
     marginBottom: 5,
     letterSpacing: 0.5,

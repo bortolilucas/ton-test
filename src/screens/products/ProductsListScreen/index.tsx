@@ -172,7 +172,7 @@ const ProductsList = () => {
           item={item}
           addItem={addItem}
           removeItem={removeItem}
-          qtd={items.get(item.id)?.qtd}
+          qtd={items[item.id]?.qtd}
         />
       )}
       ListFooterComponent={
