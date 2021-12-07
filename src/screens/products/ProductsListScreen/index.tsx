@@ -5,16 +5,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Pressable,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Alert, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FeatherIcon from 'react-native-vector-icons/Ionicons';
 import type {
   FetchProductsParamsType,
   FetchProductsResponseType,
@@ -24,8 +16,8 @@ import * as Api from '../../../api';
 import LoadingIndicator from '../../../components/common/LoadingIndicator';
 import Title from '../../../components/common/Title';
 import ProductListItem from '../../../components/products/ProductListItem';
+import SearchProductInput from '../../../components/products/SearchProductInput';
 import { Colors } from '../../../constants/colors';
-import { withOpacityStyle } from '../../../helpers/ui';
 import { isOdd } from '../../../helpers/util';
 import useCart from '../../../hooks/useCart';
 import styles from './styles';
@@ -40,8 +32,6 @@ const ProductsList = () => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const fetching = useRef(false);
-  const searchValue = useRef('');
-  const searchRef = useRef<TextInput | null>(null);
 
   const derivedProducts = useMemo(() => {
     if (!data.products) {
@@ -109,15 +99,7 @@ const ProductsList = () => {
 
   const onRefresh = () => fetchData({}, 'refresh');
 
-  const onSearchSubmit = () =>
-    fetchData({ search: searchValue.current }, 'refresh');
-
-  const onChangeSearch = (text: string) => (searchValue.current = text);
-
-  const onSearchClear = () => {
-    onRefresh();
-    searchRef.current?.setNativeProps({ text: '' });
-  };
+  const onSearchSubmit = (search: string) => fetchData({ search }, 'refresh');
 
   useEffect(() => {
     fetchData();
@@ -139,27 +121,7 @@ const ProductsList = () => {
       ]}
       ListHeaderComponent={
         <>
-          <View style={styles.containerInput}>
-            <Pressable
-              onPress={onSearchSubmit}
-              style={withOpacityStyle(styles.searchButton)}>
-              <FeatherIcon name="search" color={Colors.LIGHT_ICON} size={20} />
-            </Pressable>
-            <TextInput
-              ref={searchRef}
-              style={styles.input}
-              placeholder="Pesquisar..."
-              placeholderTextColor={Colors.TEXT}
-              onChangeText={onChangeSearch}
-              onSubmitEditing={onSearchSubmit}
-              returnKeyType="search"
-            />
-            <Pressable
-              onPress={onSearchClear}
-              style={withOpacityStyle(styles.clearButton)}>
-              <FeatherIcon name="close" color={Colors.LIGHT_ICON} size={23} />
-            </Pressable>
-          </View>
+          <SearchProductInput onSubmit={onSearchSubmit} />
           <Title style={styles.title}>
             {derivedProducts.length === 0
               ? 'Nenhum item encontrado'
