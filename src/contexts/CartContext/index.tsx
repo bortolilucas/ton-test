@@ -8,18 +8,24 @@ export type CartItemType = {
 
 export type AddItemType = (item: ProductType) => void;
 
-export type RemoveItemType = (id: number) => void;
+export type RemoveItemConfig = {
+  ignoreQtd?: boolean;
+};
+
+export type RemoveItemType = (id: number, config?: RemoveItemConfig) => void;
 
 export type CartContextType = {
-  items: Map<number, CartItemType>;
-  setItems: (items: Map<number, CartItemType>) => void;
+  items: { [key: string]: CartItemType };
+  itemsArray: CartItemType[];
+  setItems: (items: { [key: string]: CartItemType }) => void;
   addItem: AddItemType;
   removeItem: RemoveItemType;
   qtdTotal: number;
 };
 
 export const CartContext = createContext<CartContextType>({
-  items: new Map(),
+  items: {},
+  itemsArray: [],
   setItems: () => {},
   addItem: () => {},
   removeItem: () => {},
