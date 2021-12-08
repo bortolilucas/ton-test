@@ -10,6 +10,7 @@ export default StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 12,
     borderRadius: 20,
+    ...generateShadow(4),
   },
   containerImage: {
     width: 75,

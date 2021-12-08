@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { generateShadow } from 'react-native-shadow-generator';
 import { Colors } from '../../../constants/colors';
 
 export default StyleSheet.create({
@@ -10,6 +11,7 @@ export default StyleSheet.create({
     borderRadius: 15,
     marginTop: 20,
     marginBottom: 25,
+    ...generateShadow(4),
   },
   input: {
     flex: 1,

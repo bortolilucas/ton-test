@@ -8,6 +8,7 @@ export default StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     margin: 12,
+    ...generateShadow(4),
   },
   containerEmpty: {
     backgroundColor: Colors.TRANSPARENT,
