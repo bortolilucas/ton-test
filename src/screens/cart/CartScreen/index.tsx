@@ -17,7 +17,7 @@ const CartScreen = () => {
       data={itemsArray}
       contentContainerStyle={[
         styles.flatListContent,
-        { paddingBottom: bottom },
+        { paddingBottom: bottom + 15 },
       ]}
       ListHeaderComponent={
         <Title style={styles.title}>

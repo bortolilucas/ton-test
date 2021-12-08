@@ -117,7 +117,7 @@ const ProductsList = () => {
       columnWrapperStyle={styles.columnWrapper}
       contentContainerStyle={[
         styles.flatListContent,
-        { paddingBottom: bottom },
+        { paddingBottom: bottom + 15 },
       ]}
       ListHeaderComponent={
         <>
