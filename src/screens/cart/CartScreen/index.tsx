@@ -13,6 +13,7 @@ const CartScreen = () => {
 
   return (
     <FlatList
+      testID="cart-screen"
       keyExtractor={keyExtractor}
       data={itemsArray}
       contentContainerStyle={[

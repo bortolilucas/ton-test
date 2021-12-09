@@ -10,4 +10,12 @@ describe('RootStack', () => {
       getByTestId('products-list-screen');
     });
   });
+
+  test('Should render cart screen in the cart route', async () => {
+    const { getByTestId } = render(<RootStack initialRouteName="Cart" />);
+
+    await waitFor(() => {
+      getByTestId('cart-screen');
+    });
+  });
 });
