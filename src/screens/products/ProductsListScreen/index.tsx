@@ -24,7 +24,7 @@ import styles from './styles';
 
 type FetchDataMode = 'pagination' | 'refresh' | undefined;
 
-const ProductsList = () => {
+const ProductsListScreen = () => {
   const { addItem, removeItem, items } = useCart();
   const { bottom } = useSafeAreaInsets();
   const [data, setData] = useState<FetchProductsResponseType>({});
@@ -159,4 +159,4 @@ const ProductsList = () => {
 
 const keyExtractor = (product: ProductType) => product.id.toString();
 
-export default ProductsList;
+export default ProductsListScreen;
