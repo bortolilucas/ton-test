@@ -111,6 +111,7 @@ const ProductsList = () => {
 
   return (
     <FlatList
+      testID="products-list-screen"
       numColumns={2}
       keyExtractor={keyExtractor}
       data={derivedProducts}
