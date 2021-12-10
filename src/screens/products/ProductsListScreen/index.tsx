@@ -38,7 +38,7 @@ const ProductsListScreen = () => {
       return [];
     }
 
-    // Make sure data array length is an even number to there always be 2-item rows
+    // Make sure each row has 2 items
     return isOdd(data.products.length)
       ? data.products.concat({ id: -1, title: '', price: 0, empty: true })
       : data.products;
