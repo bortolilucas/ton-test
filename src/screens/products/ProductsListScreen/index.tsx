@@ -142,6 +142,7 @@ const ProductsListScreen = () => {
       ListFooterComponent={
         loadingPage ? (
           <ActivityIndicator
+            testID="loading-page-indicator"
             size="large"
             color={Colors.TEXT}
             style={styles.activityIndicatorPage}
