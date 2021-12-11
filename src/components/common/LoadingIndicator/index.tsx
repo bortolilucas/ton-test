@@ -8,7 +8,9 @@ const LoadingIndicator = () => {
   const headerHeight = useHeaderHeight();
 
   return (
-    <View style={[styles.container, { top: -headerHeight }]}>
+    <View
+      testID="loading-indicator"
+      style={[styles.container, { top: -headerHeight }]}>
       <ActivityIndicator size="large" color={Colors.TEXT} />
     </View>
   );
