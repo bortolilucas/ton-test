@@ -155,7 +155,7 @@ describe('ProductsListScreen', () => {
       });
     });
 
-    test('Should fetch next products when it reaches the end of list', async () => {
+    describe('Pagination', () => {
       const firstPageResponse: Api.FetchProductsResponseType = {
         products: [
           {
@@ -221,39 +221,82 @@ describe('ProductsListScreen', () => {
         current: 2,
       };
 
-      let mockSecondPageResolve!: (res: Api.FetchProductsResponseType) => void;
+      test('Should fetch next products when it reaches the end of list', async () => {
+        let mockSecondPageResolve!: (
+          res: Api.FetchProductsResponseType,
+        ) => void;
 
-      const fetchProductsMock = (Api.fetchProducts as jest.Mock)
-        .mockResolvedValueOnce(firstPageResponse)
-        .mockImplementationOnce(
-          () => new Promise(resolve => (mockSecondPageResolve = resolve)),
-        );
+        const fetchProductsMock = (Api.fetchProducts as jest.Mock)
+          .mockResolvedValueOnce(firstPageResponse)
+          .mockImplementationOnce(
+            () => new Promise(resolve => (mockSecondPageResolve = resolve)),
+          );
 
-      const wrapper = render(<ProductsListScreen />, {
-        wrapper: TestSafeAreaProvider,
+        const wrapper = render(<ProductsListScreen />, {
+          wrapper: TestSafeAreaProvider,
+        });
+
+        const list = await wrapper.findByTestId('products-list');
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(2);
+
+        fireEvent(list, 'onEndReached');
+
+        wrapper.getByTestId('loading-page-indicator');
+
+        await act(async () => mockSecondPageResolve(secondPageResponse));
+
+        expect(wrapper.queryByTestId('loading-page-indicator')).toBeNull();
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(4);
+
+        fireEvent(list, 'onEndReached');
+
+        expect(fetchProductsMock).toHaveBeenCalledTimes(2);
       });
 
-      const list = await wrapper.findByTestId('products-list');
+      test('Should refresh list', async () => {
+        let refreshResolve!: (res: Api.FetchProductsResponseType) => void;
 
-      expect((list.props as FlatListProps<Api.ProductType>).data).toHaveLength(
-        2,
-      );
+        (Api.fetchProducts as jest.Mock)
+          .mockResolvedValueOnce(firstPageResponse)
+          .mockResolvedValueOnce(secondPageResponse)
+          .mockImplementationOnce(
+            () => new Promise(resolve => (refreshResolve = resolve)),
+          );
 
-      fireEvent(list, 'onEndReached');
+        const wrapper = render(<ProductsListScreen />, {
+          wrapper: TestSafeAreaProvider,
+        });
 
-      wrapper.getByTestId('loading-page-indicator');
+        const list = await wrapper.findByTestId('products-list');
 
-      await act(async () => mockSecondPageResolve(secondPageResponse));
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(2);
 
-      expect(wrapper.queryByTestId('loading-page-indicator')).toBeNull();
+        await act(async () => fireEvent(list, 'onEndReached'));
 
-      expect((list.props as FlatListProps<Api.ProductType>).data).toHaveLength(
-        4,
-      );
+        fireEvent(list, 'onRefresh');
 
-      fireEvent(list, 'onEndReached');
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).refreshing,
+        ).toBeTruthy();
 
-      expect(fetchProductsMock).toHaveBeenCalledTimes(2);
+        await act(async () => refreshResolve(firstPageResponse));
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).refreshing,
+        ).toBeFalsy();
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(2);
+      });
     });
   });
 });
