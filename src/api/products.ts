@@ -40,6 +40,6 @@ export const fetchProducts = async (
 
     return Promise.resolve(response.data);
   } catch (error: any) {
-    return Promise.reject(error.message);
+    return Promise.reject(error);
   }
 };

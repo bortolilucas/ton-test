@@ -82,7 +82,7 @@ const ProductsListScreen = () => {
 
         updateData(response, mode);
       } catch (error: any) {
-        Alert.alert('Erro', error);
+        Alert.alert('Erro', error.message);
       } finally {
         updateLoading(false, mode);
       }
@@ -112,7 +112,7 @@ const ProductsListScreen = () => {
 
   return (
     <FlatList
-      testID="products-list-screen"
+      testID="products-list"
       numColumns={2}
       keyExtractor={keyExtractor}
       data={derivedProducts}
