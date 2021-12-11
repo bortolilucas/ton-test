@@ -10,7 +10,7 @@ jest.mock('../../../../screens/products/ProductsListScreen', () => jest.fn());
 jest.mock('../../../../screens/cart/CartScreen', () => jest.fn());
 
 describe('RootStack', () => {
-  test('Should render products list screen as initial route', async () => {
+  test('should render products list screen as initial route', async () => {
     (ProductsListScreen as jest.Mock).mockReturnValueOnce(
       <View testID="mock-products-list-screen" />,
     );
@@ -22,7 +22,7 @@ describe('RootStack', () => {
     });
   });
 
-  test('Should render cart screen in the cart route', async () => {
+  test('should render cart screen in the cart route', async () => {
     (CartScreen as jest.Mock).mockReturnValueOnce(
       <View testID="mock-cart-screen" />,
     );

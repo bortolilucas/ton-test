@@ -49,7 +49,7 @@ beforeEach(() => {
 
 describe('ProductsListScreen', () => {
   describe('Fetching products fails', () => {
-    test('Should show error message', async () => {
+    test('should show error message', async () => {
       let mockReject!: (error: any) => void;
 
       (Api.fetchProducts as jest.Mock).mockImplementationOnce(
@@ -75,7 +75,7 @@ describe('ProductsListScreen', () => {
   });
 
   describe('Fetching products succeeds', () => {
-    test('Should render list when products length is an odd number', async () => {
+    test('should render list when products length is an odd number', async () => {
       const response: Api.FetchProductsResponseType = {
         products: [
           {
@@ -102,7 +102,7 @@ describe('ProductsListScreen', () => {
       });
     });
 
-    test('Should render list when products length is an even number', async () => {
+    test('should render list when products length is an even number', async () => {
       const response: Api.FetchProductsResponseType = {
         products: [
           {
@@ -142,7 +142,7 @@ describe('ProductsListScreen', () => {
       });
     });
 
-    test('Should render list when products are empty', async () => {
+    test('should render list when products are empty', async () => {
       const response: Api.FetchProductsResponseType = {
         products: [],
         current: 1,
@@ -221,7 +221,7 @@ describe('ProductsListScreen', () => {
         current: 2,
       };
 
-      test('Should fetch next products when it reaches the end of list', async () => {
+      test('should fetch next products when it reaches the end of list', async () => {
         let mockSecondPageResolve!: (
           res: Api.FetchProductsResponseType,
         ) => void;
@@ -259,7 +259,7 @@ describe('ProductsListScreen', () => {
         expect(fetchProductsMock).toHaveBeenCalledTimes(2);
       });
 
-      test('Should refresh list', async () => {
+      test('should refresh list', async () => {
         let refreshResolve!: (res: Api.FetchProductsResponseType) => void;
 
         (Api.fetchProducts as jest.Mock)
