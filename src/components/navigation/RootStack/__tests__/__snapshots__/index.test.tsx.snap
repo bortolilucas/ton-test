@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RootStack should match snapshot 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <RNSScreenStack
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <RNSScreen
+      collapsable={false}
+      forwardedRef={[Function]}
+      nativeID="animatedComponent"
+      onAppear={[Function]}
+      onDisappear={[Function]}
+      onDismissed={[Function]}
+      onWillDisappear={[Function]}
+      replaceAnimation="push"
+      stackPresentation="push"
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <RNSScreenStackHeaderConfig
+        backButtonInCustomView={false}
+        backTitle=" "
+        backgroundColor="#ebebef"
+        color="#1c1c1c"
+        direction="ltr"
+        disableBackButtonMenu={false}
+        hidden={false}
+        hideBackButton={false}
+        hideShadow={true}
+        largeTitleHideShadow={false}
+        title="Produtos"
+        titleColor="#1c1c1c"
+        topInsetEnabled={false}
+        translucent={false}
+      >
+        <RNSScreenStackHeaderSubview
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          type="left"
+        />
+        <RNSScreenStackHeaderSubview
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+          type="right"
+        >
+          <View
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "paddingHorizontal": 15,
+                },
+                Object {
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#1c1c1c",
+                    "fontSize": 24,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "FontAwesome5Free-Solid",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {
+                    "fontWeight": "900",
+                  },
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNSScreenStackHeaderSubview>
+      </RNSScreenStackHeaderConfig>
+      <View
+        style={
+          Array [
+            Object {
+              "flex": 1,
+            },
+            Object {
+              "backgroundColor": "#ebebef",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "bottom": 0,
+                "justifyContent": "center",
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              Object {
+                "top": NaN,
+              },
+            ]
+          }
+          testID="loading-indicator"
+        >
+          <ActivityIndicator
+            color="#1c1c1c"
+            size="large"
+          />
+        </View>
+      </View>
+    </RNSScreen>
+  </RNSScreenStack>
+</RNCSafeAreaProvider>
+`;

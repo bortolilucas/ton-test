@@ -12,13 +12,9 @@ export type RootStackParamsList = {
   Cart: undefined;
 };
 
-type Props = {
-  initialRouteName?: keyof RootStackParamsList;
-};
-
 const Stack = createNativeStackNavigator<RootStackParamsList>();
 
-const RootStack = ({ initialRouteName = 'ProductsList' }: Props) => {
+const RootStack = () => {
   return (
     <NavigationContainer
       theme={{
@@ -33,7 +29,6 @@ const RootStack = ({ initialRouteName = 'ProductsList' }: Props) => {
         dark: false,
       }}>
       <Stack.Navigator
-        initialRouteName={initialRouteName}
         screenOptions={{
           headerShadowVisible: false,
           headerBackTitleVisible: false,
