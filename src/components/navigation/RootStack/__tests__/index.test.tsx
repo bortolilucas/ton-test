@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
-import RootStack from '..';
-import ProductsListScreen from '../../../../screens/products/ProductsListScreen';
+import { render } from '@testing-library/react-native';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
+import RootStack from '..';
 import CartScreen from '../../../../screens/cart/CartScreen';
+import ProductsListScreen from '../../../../screens/products/ProductsListScreen';
 
 jest.mock('../../../../screens/products/ProductsListScreen', () => jest.fn());
 
@@ -15,22 +15,28 @@ describe('RootStack', () => {
       <View testID="mock-products-list-screen" />,
     );
 
-    const { getByTestId } = render(<RootStack />);
+    const wrapper = render(<RootStack />);
 
-    await waitFor(() => {
-      getByTestId('mock-products-list-screen');
-    });
+    return wrapper.findByTestId('mock-products-list-screen');
   });
 
   test('should render cart screen in the cart route', async () => {
+    (ProductsListScreen as jest.Mock).mockImplementationOnce(
+      ({ navigation }) => {
+        useEffect(() => {
+          navigation.navigate('Cart');
+        }, [navigation]);
+
+        return null;
+      },
+    );
+
     (CartScreen as jest.Mock).mockReturnValueOnce(
       <View testID="mock-cart-screen" />,
     );
 
-    const { getByTestId } = render(<RootStack initialRouteName="Cart" />);
+    const wrapper = render(<RootStack />);
 
-    await waitFor(() => {
-      getByTestId('mock-cart-screen');
-    });
+    return wrapper.findByTestId('mock-cart-screen');
   });
 });
