@@ -17,7 +17,10 @@ const CartButton = () => {
   const onPress = () => navigate('Cart');
 
   return (
-    <Pressable onPress={onPress} style={withOpacityStyle(styles.cartButton)}>
+    <Pressable
+      testID="cart-button"
+      onPress={onPress}
+      style={withOpacityStyle(styles.cartButton)}>
       <FontAwesome5Icon name="shopping-cart" color={Colors.TEXT} size={24} />
       {!!qtdTotal && (
         <View style={styles.qtdIndicator}>
