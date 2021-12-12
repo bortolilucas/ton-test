@@ -25,6 +25,7 @@ const SearchProductInput = ({ onSubmit, ...rest }: Props) => {
   return (
     <View style={styles.containerInput}>
       <Pressable
+        testID="search-button"
         onPress={handleSubmit}
         style={withOpacityStyle(styles.searchButton)}>
         <FeatherIcon name="search" color={Colors.LIGHT_ICON} size={20} />
@@ -40,6 +41,7 @@ const SearchProductInput = ({ onSubmit, ...rest }: Props) => {
         {...rest}
       />
       <Pressable
+        testID="clear-button"
         onPress={onClearPress}
         style={withOpacityStyle(styles.clearButton)}>
         <FeatherIcon name="close" color={Colors.LIGHT_ICON} size={23} />
