@@ -1,11 +1,16 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
-import React from 'react';
-import { Alert, FlatListProps } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, FlatListProps, TextInput } from 'react-native';
 import ProductsListScreen from '..';
 import * as Api from '../../../../api';
+import SearchProductInput from '../../../../components/products/SearchProductInput';
 import TestSafeAreaProvider from '../../../../components/tests/TestSafeAreaProvider';
 
 jest.mock('../../../../api');
+
+jest.mock('../../../../components/products/SearchProductInput', () =>
+  jest.fn().mockReturnValue(null),
+);
 
 type TestFetchProductsResolved = {
   response: Api.FetchProductsResponseType;
@@ -43,7 +48,7 @@ const testFetchProductsResolved = async ({
   );
 };
 
-beforeEach(() => {
+afterEach(() => {
   (Api.fetchProducts as jest.Mock).mockClear();
 });
 
@@ -75,8 +80,8 @@ describe('ProductsListScreen', () => {
   });
 
   describe('Fetching products succeeds', () => {
-    test('should render list when products length is an odd number', async () => {
-      const response: Api.FetchProductsResponseType = {
+    describe('Items are not empty', () => {
+      const oddResponse: Api.FetchProductsResponseType = {
         products: [
           {
             id: 1,
@@ -95,15 +100,7 @@ describe('ProductsListScreen', () => {
         current: 1,
       };
 
-      await testFetchProductsResolved({
-        response,
-        textToLookFor: 'Adicione itens ao carrinho',
-        listLength: 2,
-      });
-    });
-
-    test('should render list when products length is an even number', async () => {
-      const response: Api.FetchProductsResponseType = {
+      const evenResponse: Api.FetchProductsResponseType = {
         products: [
           {
             id: 1,
@@ -131,14 +128,89 @@ describe('ProductsListScreen', () => {
               count: 120,
             },
           },
+          {
+            id: 3,
+            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
+            price: 109.95,
+            description:
+              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
+            category: "men's clothing",
+            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+            rating: {
+              rate: 3.9,
+              count: 120,
+            },
+          },
+          {
+            id: 4,
+            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
+            price: 109.95,
+            description:
+              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
+            category: "men's clothing",
+            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+            rating: {
+              rate: 3.9,
+              count: 120,
+            },
+          },
         ],
         current: 1,
       };
 
-      await testFetchProductsResolved({
-        response,
-        textToLookFor: 'Adicione itens ao carrinho',
-        listLength: 2,
+      test('should render list when products length is an odd number', async () => {
+        await testFetchProductsResolved({
+          response: oddResponse,
+          textToLookFor: 'Adicione itens ao carrinho',
+          listLength: 2,
+        });
+      });
+
+      test('should render list when products length is an even number', async () => {
+        await testFetchProductsResolved({
+          response: evenResponse,
+          textToLookFor: 'Adicione itens ao carrinho',
+          listLength: 4,
+        });
+      });
+
+      test('should search and render items', async () => {
+        (Api.fetchProducts as jest.Mock)
+          .mockResolvedValueOnce(evenResponse)
+          .mockResolvedValueOnce(oddResponse);
+
+        const wrapper = render(<ProductsListScreen />, {
+          wrapper: TestSafeAreaProvider,
+        });
+
+        (SearchProductInput as jest.Mock).mockImplementationOnce(
+          ({ onSubmit }) => {
+            const [value, setValue] = useState('');
+
+            return (
+              <TextInput
+                placeholder="Pesquisar..."
+                onChangeText={setValue}
+                onSubmitEditing={() => onSubmit(value)}
+                value={value}
+              />
+            );
+          },
+        );
+
+        const list = await wrapper.findByTestId('products-list');
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(4);
+
+        const input = wrapper.getByPlaceholderText('Pesquisar...');
+
+        await act(async () => fireEvent(input, 'onSubmitEditing'));
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(2);
       });
     });
 
