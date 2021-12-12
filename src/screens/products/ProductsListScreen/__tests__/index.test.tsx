@@ -1,4 +1,3 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
 import React, { useState } from 'react';
 import { Alert, FlatListProps, TextInput } from 'react-native';
 import ProductsListScreen from '..';
@@ -12,6 +11,7 @@ import {
   oddProductsResponse,
   secondProductsPageResponse,
 } from '../../../../dto/products';
+import { act, fireEvent, render } from '../../../../helpers/testing';
 
 jest.mock('../../../../api');
 
