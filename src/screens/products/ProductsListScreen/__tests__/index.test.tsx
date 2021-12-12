@@ -5,6 +5,13 @@ import ProductsListScreen from '..';
 import * as Api from '../../../../api';
 import SearchProductInput from '../../../../components/products/SearchProductInput';
 import TestSafeAreaProvider from '../../../../components/tests/TestSafeAreaProvider';
+import {
+  emptyProductsResponse,
+  evenProductsResponse,
+  firstProductsPageResponse,
+  oddProductsResponse,
+  secondProductsPageResponse,
+} from '../../../../dto/products';
 
 jest.mock('../../../../api');
 
@@ -81,86 +88,9 @@ describe('ProductsListScreen', () => {
 
   describe('Fetching products succeeds', () => {
     describe('Items are not empty', () => {
-      const oddResponse: Api.FetchProductsResponseType = {
-        products: [
-          {
-            id: 1,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-        ],
-        current: 1,
-      };
-
-      const evenResponse: Api.FetchProductsResponseType = {
-        products: [
-          {
-            id: 1,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-          {
-            id: 2,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-          {
-            id: 3,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-          {
-            id: 4,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-        ],
-        current: 1,
-      };
-
       test('should render list when products length is an odd number', async () => {
         await testFetchProductsResolved({
-          response: oddResponse,
+          response: oddProductsResponse,
           textToLookFor: 'Adicione itens ao carrinho',
           listLength: 2,
         });
@@ -168,7 +98,7 @@ describe('ProductsListScreen', () => {
 
       test('should render list when products length is an even number', async () => {
         await testFetchProductsResolved({
-          response: evenResponse,
+          response: evenProductsResponse,
           textToLookFor: 'Adicione itens ao carrinho',
           listLength: 4,
         });
@@ -176,8 +106,8 @@ describe('ProductsListScreen', () => {
 
       test('should search and render items', async () => {
         (Api.fetchProducts as jest.Mock)
-          .mockResolvedValueOnce(evenResponse)
-          .mockResolvedValueOnce(oddResponse);
+          .mockResolvedValueOnce(evenProductsResponse)
+          .mockResolvedValueOnce(oddProductsResponse);
 
         const wrapper = render(<ProductsListScreen />, {
           wrapper: TestSafeAreaProvider,
@@ -214,92 +144,24 @@ describe('ProductsListScreen', () => {
       });
     });
 
-    test('should render list when products are empty', async () => {
-      const response: Api.FetchProductsResponseType = {
-        products: [],
-        current: 1,
-      };
-
-      await testFetchProductsResolved({
-        response,
-        textToLookFor: 'Nenhum item encontrado',
-        listLength: 0,
+    describe('Item are empty', () => {
+      test('should render list properly', async () => {
+        await testFetchProductsResolved({
+          response: emptyProductsResponse,
+          textToLookFor: 'Nenhum item encontrado',
+          listLength: 0,
+        });
       });
     });
 
     describe('Pagination', () => {
-      const firstPageResponse: Api.FetchProductsResponseType = {
-        products: [
-          {
-            id: 1,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-          {
-            id: 2,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-        ],
-        current: 1,
-        next: 2,
-      };
-
-      const secondPageResponse: Api.FetchProductsResponseType = {
-        products: [
-          {
-            id: 3,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-          {
-            id: 4,
-            title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-            price: 109.95,
-            description:
-              'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-            category: "men's clothing",
-            image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-            rating: {
-              rate: 3.9,
-              count: 120,
-            },
-          },
-        ],
-        current: 2,
-      };
-
       test('should fetch next products when it reaches the end of list', async () => {
         let mockSecondPageResolve!: (
           res: Api.FetchProductsResponseType,
         ) => void;
 
         const fetchProductsMock = (Api.fetchProducts as jest.Mock)
-          .mockResolvedValueOnce(firstPageResponse)
+          .mockResolvedValueOnce(firstProductsPageResponse)
           .mockImplementationOnce(
             () => new Promise(resolve => (mockSecondPageResolve = resolve)),
           );
@@ -318,7 +180,9 @@ describe('ProductsListScreen', () => {
 
         wrapper.getByTestId('loading-page-indicator');
 
-        await act(async () => mockSecondPageResolve(secondPageResponse));
+        await act(async () =>
+          mockSecondPageResolve(secondProductsPageResponse),
+        );
 
         expect(wrapper.queryByTestId('loading-page-indicator')).toBeNull();
 
@@ -335,8 +199,8 @@ describe('ProductsListScreen', () => {
         let refreshResolve!: (res: Api.FetchProductsResponseType) => void;
 
         (Api.fetchProducts as jest.Mock)
-          .mockResolvedValueOnce(firstPageResponse)
-          .mockResolvedValueOnce(secondPageResponse)
+          .mockResolvedValueOnce(firstProductsPageResponse)
+          .mockResolvedValueOnce(secondProductsPageResponse)
           .mockImplementationOnce(
             () => new Promise(resolve => (refreshResolve = resolve)),
           );
@@ -359,7 +223,7 @@ describe('ProductsListScreen', () => {
           (list.props as FlatListProps<Api.ProductType>).refreshing,
         ).toBeTruthy();
 
-        await act(async () => refreshResolve(firstPageResponse));
+        await act(async () => refreshResolve(firstProductsPageResponse));
 
         expect(
           (list.props as FlatListProps<Api.ProductType>).refreshing,
