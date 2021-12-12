@@ -20,7 +20,12 @@ type Props = {
 
 const ProductListItem = ({ item, qtd, addItem, removeItem }: Props) => {
   if (item.empty) {
-    return <View style={[styles.container, styles.containerEmpty]} />;
+    return (
+      <View
+        testID="empty-view"
+        style={[styles.container, styles.containerEmpty]}
+      />
+    );
   }
 
   const handleAddItem = () => addItem(item);
@@ -32,6 +37,7 @@ const ProductListItem = ({ item, qtd, addItem, removeItem }: Props) => {
       <View style={styles.containerImage}>
         {!!item.image && (
           <Image
+            testID="product-image"
             source={{ uri: item.image }}
             style={styles.image}
             resizeMode="contain"
@@ -45,12 +51,14 @@ const ProductListItem = ({ item, qtd, addItem, removeItem }: Props) => {
       {qtd ? (
         <View style={styles.addButton}>
           <Pressable
+            testID="minus-button"
             onPress={handleRemoveItem}
             style={withOpacityStyle(styles.circleButton)}>
             <FontAwesome5 name="minus" color={Colors.WHITE} size={13} />
           </Pressable>
           <Text style={styles.addButtonText}>{qtd}</Text>
           <Pressable
+            testID="plus-button"
             onPress={handleAddItem}
             style={withOpacityStyle(styles.circleButton)}>
             <FontAwesome5 name="plus" color={Colors.WHITE} size={12} />
@@ -58,6 +66,7 @@ const ProductListItem = ({ item, qtd, addItem, removeItem }: Props) => {
         </View>
       ) : (
         <Pressable
+          testID="add-button"
           onPress={handleAddItem}
           style={withOpacityStyle(styles.addButton)}>
           <Text style={styles.addButtonText}>Adicionar</Text>
