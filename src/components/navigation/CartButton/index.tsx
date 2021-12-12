@@ -23,7 +23,7 @@ const CartButton = () => {
       style={withOpacityStyle(styles.cartButton)}>
       <FontAwesome5Icon name="shopping-cart" color={Colors.TEXT} size={24} />
       {!!qtdTotal && (
-        <View style={styles.qtdIndicator}>
+        <View testID="qtd-indicator" style={styles.qtdIndicator}>
           <Text
             adjustsFontSizeToFit
             numberOfLines={1}
