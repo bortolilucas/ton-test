@@ -16,3 +16,14 @@ jest.mock('@react-navigation/native', () => ({
     .fn()
     .mockReturnValue({ navigate: jest.fn(), goBack: jest.fn() }),
 }));
+
+jest.mock('../hooks/useCart', () =>
+  jest.fn().mockReturnValue({
+    items: {},
+    itemsArray: [],
+    setItems: jest.fn(),
+    addItem: jest.fn(),
+    removeItem: jest.fn(),
+    qtdTotal: 0,
+  }),
+);
