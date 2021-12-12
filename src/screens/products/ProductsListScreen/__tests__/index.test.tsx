@@ -4,7 +4,7 @@ import { Alert, FlatListProps, TextInput } from 'react-native';
 import ProductsListScreen from '..';
 import * as Api from '../../../../api';
 import SearchProductInput from '../../../../components/products/SearchProductInput';
-import TestSafeAreaProvider from '../../../../components/tests/TestSafeAreaProvider';
+import TestSafeAreaProvider from '../../../../components/testing/TestSafeAreaProvider';
 import {
   emptyProductsResponse,
   evenProductsResponse,
