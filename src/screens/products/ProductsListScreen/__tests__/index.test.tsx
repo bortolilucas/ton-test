@@ -4,13 +4,7 @@ import ProductsListScreen from '..';
 import * as Api from '../../../../api';
 import SearchProductInput from '../../../../components/products/SearchProductInput';
 import TestSafeAreaProvider from '../../../../components/testing/TestSafeAreaProvider';
-import {
-  emptyProductsResponse,
-  evenProductsResponse,
-  firstProductsPageResponse,
-  oddProductsResponse,
-  secondProductsPageResponse,
-} from '../../../../dto/products';
+import { ProductsMockData } from '../../../../constants/testing/products';
 import { act, fireEvent, render } from '../../../../helpers/testing';
 
 jest.mock('../../../../api');
@@ -90,7 +84,7 @@ describe('ProductsListScreen', () => {
     describe('Items are not empty', () => {
       test('should render list when products length is an odd number', async () => {
         await testFetchProductsResolved({
-          response: oddProductsResponse,
+          response: ProductsMockData.oddLengthResponse,
           textToLookFor: 'Adicione itens ao carrinho',
           listLength: 2,
         });
@@ -98,7 +92,7 @@ describe('ProductsListScreen', () => {
 
       test('should render list when products length is an even number', async () => {
         await testFetchProductsResolved({
-          response: evenProductsResponse,
+          response: ProductsMockData.evenLengthResponse,
           textToLookFor: 'Adicione itens ao carrinho',
           listLength: 4,
         });
@@ -106,8 +100,8 @@ describe('ProductsListScreen', () => {
 
       test('should search and render items', async () => {
         (Api.fetchProducts as jest.Mock)
-          .mockResolvedValueOnce(evenProductsResponse)
-          .mockResolvedValueOnce(oddProductsResponse);
+          .mockResolvedValueOnce(ProductsMockData.evenLengthResponse)
+          .mockResolvedValueOnce(ProductsMockData.oddLengthResponse);
 
         const wrapper = render(<ProductsListScreen />, {
           wrapper: TestSafeAreaProvider,
@@ -147,7 +141,7 @@ describe('ProductsListScreen', () => {
     describe('Item are empty', () => {
       test('should render list properly', async () => {
         await testFetchProductsResolved({
-          response: emptyProductsResponse,
+          response: ProductsMockData.emptyResponse,
           textToLookFor: 'Nenhum item encontrado',
           listLength: 0,
         });
@@ -161,7 +155,7 @@ describe('ProductsListScreen', () => {
         ) => void;
 
         const fetchProductsMock = (Api.fetchProducts as jest.Mock)
-          .mockResolvedValueOnce(firstProductsPageResponse)
+          .mockResolvedValueOnce(ProductsMockData.firstPageResponse)
           .mockImplementationOnce(
             () => new Promise(resolve => (mockSecondPageResolve = resolve)),
           );
@@ -181,7 +175,7 @@ describe('ProductsListScreen', () => {
         wrapper.getByTestId('loading-page-indicator');
 
         await act(async () =>
-          mockSecondPageResolve(secondProductsPageResponse),
+          mockSecondPageResolve(ProductsMockData.secondPageResponse),
         );
 
         expect(wrapper.queryByTestId('loading-page-indicator')).toBeNull();
@@ -199,8 +193,8 @@ describe('ProductsListScreen', () => {
         let refreshResolve!: (res: Api.FetchProductsResponseType) => void;
 
         (Api.fetchProducts as jest.Mock)
-          .mockResolvedValueOnce(firstProductsPageResponse)
-          .mockResolvedValueOnce(secondProductsPageResponse)
+          .mockResolvedValueOnce(ProductsMockData.firstPageResponse)
+          .mockResolvedValueOnce(ProductsMockData.secondPageResponse)
           .mockImplementationOnce(
             () => new Promise(resolve => (refreshResolve = resolve)),
           );
@@ -223,7 +217,9 @@ describe('ProductsListScreen', () => {
           (list.props as FlatListProps<Api.ProductType>).refreshing,
         ).toBeTruthy();
 
-        await act(async () => refreshResolve(firstProductsPageResponse));
+        await act(async () =>
+          refreshResolve(ProductsMockData.firstPageResponse),
+        );
 
         expect(
           (list.props as FlatListProps<Api.ProductType>).refreshing,
