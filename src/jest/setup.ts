@@ -9,3 +9,10 @@ jest.mock('@react-navigation/elements', () => ({
   ...jest.requireActual('@react-navigation/elements'),
   useHeaderHeight: jest.fn(),
 }));
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual<object>('@react-navigation/native'),
+  useNavigation: jest
+    .fn()
+    .mockReturnValue({ navigate: jest.fn(), goBack: jest.fn() }),
+}));
