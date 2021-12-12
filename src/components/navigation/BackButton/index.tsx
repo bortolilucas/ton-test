@@ -15,7 +15,10 @@ const BackButton = ({ canGoBack }: HeaderBackButtonProps) => {
   }
 
   return (
-    <Pressable onPress={goBack} style={withOpacityStyle(styles.container)}>
+    <Pressable
+      testID="back-button"
+      onPress={goBack}
+      style={withOpacityStyle(styles.container)}>
       <FontAwesome name="angle-left" color={Colors.TEXT} size={38} />
     </Pressable>
   );
