@@ -42,18 +42,21 @@ const CartItem = ({ item: { item, qtd }, addItem, removeItem }: Props) => {
         </View>
         <View style={styles.containerButtons}>
           <Pressable
+            testID="delete-button"
             onPress={handleRemoveItem}
             style={withOpacityStyle(styles.circleButton)}>
             <FontAwesome5Icon name="times" color={Colors.TEXT} size={13} />
           </Pressable>
           <View style={styles.addButton}>
             <Pressable
+              testID="minus-button"
               onPress={handleRemoveOne}
               style={withOpacityStyle(styles.circleButton)}>
               <FontAwesome5Icon name="minus" color={Colors.WHITE} size={11} />
             </Pressable>
             <Text style={styles.addButtonText}>{qtd}</Text>
             <Pressable
+              testID="plus-button"
               onPress={handleAddItem}
               style={withOpacityStyle(styles.circleButton)}>
               <FontAwesome5Icon name="plus" color={Colors.WHITE} size={10} />
