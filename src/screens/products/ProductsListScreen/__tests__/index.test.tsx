@@ -30,9 +30,7 @@ const testFetchProductsResolved = async ({
     () => new Promise(resolve => (mockResolve = resolve)),
   );
 
-  const wrapper = render(<ProductsListScreen />, {
-    wrapper: TestSafeAreaProvider,
-  });
+  const wrapper = render(<ProductsListScreen />);
 
   await wrapper.findByTestId('loading-indicator');
 
@@ -103,9 +101,7 @@ describe('ProductsListScreen', () => {
           .mockResolvedValueOnce(ProductsMockData.evenLengthResponse)
           .mockResolvedValueOnce(ProductsMockData.oddLengthResponse);
 
-        const wrapper = render(<ProductsListScreen />, {
-          wrapper: TestSafeAreaProvider,
-        });
+        const wrapper = render(<ProductsListScreen />);
 
         (SearchProductInput as jest.Mock).mockImplementationOnce(
           ({ onSubmit }) => {
@@ -139,7 +135,7 @@ describe('ProductsListScreen', () => {
     });
 
     describe('Item are empty', () => {
-      test('should render list properly', async () => {
+      test('should render empty list', async () => {
         await testFetchProductsResolved({
           response: ProductsMockData.emptyResponse,
           textToLookFor: 'Nenhum item encontrado',
@@ -160,9 +156,7 @@ describe('ProductsListScreen', () => {
             () => new Promise(resolve => (mockSecondPageResolve = resolve)),
           );
 
-        const wrapper = render(<ProductsListScreen />, {
-          wrapper: TestSafeAreaProvider,
-        });
+        const wrapper = render(<ProductsListScreen />);
 
         const list = await wrapper.findByTestId('products-list');
 
@@ -199,9 +193,7 @@ describe('ProductsListScreen', () => {
             () => new Promise(resolve => (refreshResolve = resolve)),
           );
 
-        const wrapper = render(<ProductsListScreen />, {
-          wrapper: TestSafeAreaProvider,
-        });
+        const wrapper = render(<ProductsListScreen />);
 
         const list = await wrapper.findByTestId('products-list');
 
