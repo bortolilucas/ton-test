@@ -4,10 +4,19 @@ import { CartContext, CartContextType, CartItemType, RemoveItemType } from '.';
 import type { ProductType } from '../../api';
 import usePersistentState from '../../hooks/usePersistentState';
 
-const CartProvider: React.FC = ({ children }) => {
-  const [items, setItems] = usePersistentState<{ [key: string]: CartItemType }>(
+export type CartItemsState = { [key: string]: CartItemType };
+
+export type CartProviderProps = {
+  defaultItems?: CartItemsState;
+};
+
+const CartProvider: React.FC<CartProviderProps> = ({
+  children,
+  defaultItems = {},
+}) => {
+  const [items, setItems] = usePersistentState<CartItemsState>(
     'cartItems',
-    {},
+    defaultItems,
   );
 
   const addItem = useCallback(
