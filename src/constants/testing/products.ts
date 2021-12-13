@@ -1,4 +1,4 @@
-import type { ProductType } from '../../api';
+import type { FetchProductsResponseType, ProductType } from '../../api';
 
 export const makeMockProduct = (
   id: number,
@@ -24,11 +24,11 @@ export const ProductsMockData = {
     title: '',
     price: 0,
     empty: true,
-  },
+  } as ProductType,
   oddLengthResponse: {
     products: [makeMockProduct(1)],
     current: 1,
-  },
+  } as FetchProductsResponseType,
   evenLengthResponse: {
     products: [
       makeMockProduct(1),
@@ -37,18 +37,18 @@ export const ProductsMockData = {
       makeMockProduct(4),
     ],
     current: 1,
-  },
+  } as FetchProductsResponseType,
   emptyResponse: {
     products: [],
     current: 1,
-  },
+  } as FetchProductsResponseType,
   firstPageResponse: {
     products: [makeMockProduct(1), makeMockProduct(2)],
     current: 1,
     next: 2,
-  },
+  } as FetchProductsResponseType,
   secondPageResponse: {
     products: [makeMockProduct(3), makeMockProduct(4)],
     current: 2,
-  },
+  } as FetchProductsResponseType,
 };
