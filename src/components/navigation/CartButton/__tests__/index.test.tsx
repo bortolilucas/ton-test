@@ -4,6 +4,10 @@ import CartButton from '..';
 import { fireEvent, render, waitFor } from '../../../../helpers/testing';
 import useCart from '../../../../hooks/useCart';
 
+jest.mock('../../../../hooks/useCart', () =>
+  jest.fn().mockReturnValueOnce({ qtdTotal: 0 }),
+);
+
 describe('CartButton', () => {
   test('should cart button navigate to cart screen when pressed', () => {
     const navigateMock = jest.fn();
