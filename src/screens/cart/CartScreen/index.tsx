@@ -23,7 +23,9 @@ const CartScreen = () => {
       ListHeaderComponent={
         <Title style={styles.title}>
           {qtdTotal > 0
-            ? `${qtdTotal} produtos adicionados`
+            ? `${qtdTotal} ${
+                qtdTotal > 1 ? 'produtos adicionados' : 'produto adicionado'
+              }`
             : 'Nenhum produto adicionado'}
         </Title>
       }
