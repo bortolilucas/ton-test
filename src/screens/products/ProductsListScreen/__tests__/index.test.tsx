@@ -13,12 +13,6 @@ jest.mock('../../../../components/products/SearchProductInput', () =>
   jest.fn().mockReturnValue(null),
 );
 
-type TestFetchProductsResolved = {
-  response: Api.FetchProductsResponseType;
-  textToLookFor: string;
-  listLength: number;
-};
-
 afterEach(() => {
   (Api.fetchProducts as jest.Mock).mockClear();
 });
