@@ -19,34 +19,6 @@ type TestFetchProductsResolved = {
   listLength: number;
 };
 
-const testFetchProductsResolved = async ({
-  response,
-  textToLookFor,
-  listLength,
-}: TestFetchProductsResolved) => {
-  let mockResolve!: (res: Api.FetchProductsResponseType) => void;
-
-  (Api.fetchProducts as jest.Mock).mockImplementationOnce(
-    () => new Promise(resolve => (mockResolve = resolve)),
-  );
-
-  const wrapper = render(<ProductsListScreen />);
-
-  await wrapper.findByTestId('loading-indicator');
-
-  await act(async () => mockResolve(response));
-
-  expect(wrapper.queryByTestId('loading-indicator')).toBeNull();
-
-  wrapper.getByText(textToLookFor);
-
-  const list = wrapper.getByTestId('products-list');
-
-  expect((list.props as FlatListProps<Api.ProductType>).data).toHaveLength(
-    listLength,
-  );
-};
-
 afterEach(() => {
   (Api.fetchProducts as jest.Mock).mockClear();
 });
@@ -81,19 +53,51 @@ describe('ProductsListScreen', () => {
   describe('Fetching products succeeds', () => {
     describe('Items are not empty', () => {
       test('should render list when products length is an odd number', async () => {
-        await testFetchProductsResolved({
-          response: ProductsMockData.oddLengthResponse,
-          textToLookFor: 'Adicione itens ao carrinho',
-          listLength: 2,
-        });
+        let mockResolve!: (res: Api.FetchProductsResponseType) => void;
+
+        (Api.fetchProducts as jest.Mock).mockImplementationOnce(
+          () => new Promise(resolve => (mockResolve = resolve)),
+        );
+
+        const wrapper = render(<ProductsListScreen />);
+
+        await wrapper.findByTestId('loading-indicator');
+
+        await act(async () => mockResolve(ProductsMockData.oddLengthResponse));
+
+        expect(wrapper.queryByTestId('loading-indicator')).toBeNull();
+
+        wrapper.getByText('Adicione itens ao carrinho');
+
+        const list = wrapper.getByTestId('products-list');
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(2);
       });
 
       test('should render list when products length is an even number', async () => {
-        await testFetchProductsResolved({
-          response: ProductsMockData.evenLengthResponse,
-          textToLookFor: 'Adicione itens ao carrinho',
-          listLength: 4,
-        });
+        let mockResolve!: (res: Api.FetchProductsResponseType) => void;
+
+        (Api.fetchProducts as jest.Mock).mockImplementationOnce(
+          () => new Promise(resolve => (mockResolve = resolve)),
+        );
+
+        const wrapper = render(<ProductsListScreen />);
+
+        await wrapper.findByTestId('loading-indicator');
+
+        await act(async () => mockResolve(ProductsMockData.evenLengthResponse));
+
+        expect(wrapper.queryByTestId('loading-indicator')).toBeNull();
+
+        wrapper.getByText('Adicione itens ao carrinho');
+
+        const list = wrapper.getByTestId('products-list');
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(4);
       });
 
       test('should search and render items', async () => {
@@ -136,11 +140,27 @@ describe('ProductsListScreen', () => {
 
     describe('Item are empty', () => {
       test('should render empty list', async () => {
-        await testFetchProductsResolved({
-          response: ProductsMockData.emptyResponse,
-          textToLookFor: 'Nenhum item encontrado',
-          listLength: 0,
-        });
+        let mockResolve!: (res: Api.FetchProductsResponseType) => void;
+
+        (Api.fetchProducts as jest.Mock).mockImplementationOnce(
+          () => new Promise(resolve => (mockResolve = resolve)),
+        );
+
+        const wrapper = render(<ProductsListScreen />);
+
+        await wrapper.findByTestId('loading-indicator');
+
+        await act(async () => mockResolve(ProductsMockData.emptyResponse));
+
+        expect(wrapper.queryByTestId('loading-indicator')).toBeNull();
+
+        wrapper.getByText('Nenhum item encontrado');
+
+        const list = wrapper.getByTestId('products-list');
+
+        expect(
+          (list.props as FlatListProps<Api.ProductType>).data,
+        ).toHaveLength(0);
       });
     });
 
@@ -221,6 +241,105 @@ describe('ProductsListScreen', () => {
           (list.props as FlatListProps<Api.ProductType>).data,
         ).toHaveLength(2);
       });
+    });
+  });
+
+  describe('Cart', () => {
+    test('should add item to cart', async () => {
+      (Api.fetchProducts as jest.Mock).mockResolvedValueOnce(
+        ProductsMockData.evenLengthResponse,
+      );
+
+      const wrapper = render(<ProductsListScreen />);
+
+      const [firstAddButton] = await wrapper.findAllByTestId('add-button');
+
+      await act(async () => fireEvent.press(firstAddButton));
+
+      const [firstQtdText] = wrapper.getAllByText('1');
+
+      expect(firstQtdText).toBeDefined();
+    });
+
+    test('should increse item qtd', async () => {
+      (Api.fetchProducts as jest.Mock).mockResolvedValueOnce(
+        ProductsMockData.evenLengthResponse,
+      );
+
+      const [firstProduct] = ProductsMockData.evenLengthResponse.products!;
+
+      const wrapper = render(<ProductsListScreen />, {
+        cartProviderProps: {
+          defaultItems: {
+            [firstProduct.id]: {
+              item: firstProduct,
+              qtd: 1,
+            },
+          },
+        },
+      });
+
+      const [firstPlusButton] = await wrapper.findAllByTestId('plus-button');
+
+      await act(async () => fireEvent.press(firstPlusButton));
+
+      const [firstQtdText] = wrapper.getAllByText('2');
+
+      expect(firstQtdText).toBeDefined();
+    });
+
+    test('should decrease item qtd', async () => {
+      (Api.fetchProducts as jest.Mock).mockResolvedValueOnce(
+        ProductsMockData.evenLengthResponse,
+      );
+
+      const [firstProduct] = ProductsMockData.evenLengthResponse.products!;
+
+      const wrapper = render(<ProductsListScreen />, {
+        cartProviderProps: {
+          defaultItems: {
+            [firstProduct.id]: {
+              item: firstProduct,
+              qtd: 2,
+            },
+          },
+        },
+      });
+
+      const [firstMinusButton] = await wrapper.findAllByTestId('minus-button');
+
+      await act(async () => fireEvent.press(firstMinusButton));
+
+      const [firstQtdText] = wrapper.getAllByText('1');
+
+      expect(firstQtdText).toBeDefined();
+    });
+
+    test('should remove item from cart', async () => {
+      (Api.fetchProducts as jest.Mock).mockResolvedValueOnce(
+        ProductsMockData.evenLengthResponse,
+      );
+
+      const [firstProduct] = ProductsMockData.evenLengthResponse.products!;
+
+      const wrapper = render(<ProductsListScreen />, {
+        cartProviderProps: {
+          defaultItems: {
+            [firstProduct.id]: {
+              item: firstProduct,
+              qtd: 1,
+            },
+          },
+        },
+      });
+
+      const [firstMinusButton] = await wrapper.findAllByTestId('minus-button');
+
+      await act(async () => fireEvent.press(firstMinusButton));
+
+      const [firstAddButton] = wrapper.getAllByTestId('add-button');
+
+      expect(firstAddButton).toBeDefined();
     });
   });
 });
