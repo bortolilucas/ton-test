@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
-import { Alert, FlatListProps, TextInput } from 'react-native';
+import React from 'react';
+import { Alert, FlatListProps } from 'react-native';
 import ProductsListScreen from '..';
 import * as Api from '../../../../api';
-import SearchProductInput from '../../../../components/products/SearchProductInput';
 import TestSafeAreaProvider from '../../../../components/testing/TestSafeAreaProvider';
 import { ProductsMockData } from '../../../../constants/testing/products';
 import { act, fireEvent, render } from '../../../../helpers/testing';
 
 jest.mock('../../../../api');
-
-jest.mock('../../../../components/products/SearchProductInput', () =>
-  jest.fn().mockReturnValue(null),
-);
 
 afterEach(() => {
   (Api.fetchProducts as jest.Mock).mockClear();
@@ -95,36 +90,27 @@ describe('ProductsListScreen', () => {
       });
 
       test('should search and render items', async () => {
+        let searchText!: string;
+
         (Api.fetchProducts as jest.Mock)
           .mockResolvedValueOnce(ProductsMockData.evenLengthResponse)
-          .mockResolvedValueOnce(ProductsMockData.oddLengthResponse);
+          .mockImplementationOnce(data => {
+            searchText = data.search;
+
+            return Promise.resolve(ProductsMockData.oddLengthResponse);
+          });
 
         const wrapper = render(<ProductsListScreen />);
 
-        (SearchProductInput as jest.Mock).mockImplementationOnce(
-          ({ onSubmit }) => {
-            const [value, setValue] = useState('');
+        const input = await wrapper.findByPlaceholderText('Pesquisar...');
 
-            return (
-              <TextInput
-                placeholder="Pesquisar..."
-                onChangeText={setValue}
-                onSubmitEditing={() => onSubmit(value)}
-                value={value}
-              />
-            );
-          },
-        );
+        const list = wrapper.getByTestId('products-list');
 
-        const list = await wrapper.findByTestId('products-list');
-
-        expect(
-          (list.props as FlatListProps<Api.ProductType>).data,
-        ).toHaveLength(4);
-
-        const input = wrapper.getByPlaceholderText('Pesquisar...');
+        fireEvent.changeText(input, 'search text');
 
         await act(async () => fireEvent(input, 'onSubmitEditing'));
+
+        expect(searchText).toMatch('search text');
 
         expect(
           (list.props as FlatListProps<Api.ProductType>).data,
