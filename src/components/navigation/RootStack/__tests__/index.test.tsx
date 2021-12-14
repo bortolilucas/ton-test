@@ -5,9 +5,9 @@ import RootStack from '..';
 import CartScreen from '../../../../screens/cart/CartScreen';
 import ProductsListScreen from '../../../../screens/products/ProductsListScreen';
 
-jest.mock('../../../../screens/products/ProductsListScreen', () => jest.fn());
+jest.mock('../../../../screens/products/ProductsListScreen');
 
-jest.mock('../../../../screens/cart/CartScreen', () => jest.fn());
+jest.mock('../../../../screens/cart/CartScreen');
 
 describe('RootStack', () => {
   test('should render products list screen as initial route', async () => {
