@@ -8,6 +8,7 @@ export const makeCartItem = (id: number, qtd: number): CartItemType => ({
 });
 
 export const CartMockData = {
+  baseItem: makeCartItem(1, 2),
   defaultItems: {
     1: makeCartItem(1, 2),
     2: makeCartItem(2, 2),

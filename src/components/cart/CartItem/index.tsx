@@ -28,6 +28,7 @@ const CartItem = ({ item: { item, qtd }, addItem, removeItem }: Props) => {
     <View style={styles.container}>
       <View style={styles.containerImage}>
         <Image
+          testID="cart-product-image"
           style={styles.image}
           source={{ uri: item.image }}
           resizeMode="contain"
