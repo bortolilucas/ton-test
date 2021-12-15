@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import App from '../App';
 import AppStatusBar from '../components/common/AppStatusBar';
 import RootStack from '../components/navigation/RootStack';
+import { Colors } from '../constants/colors';
 import CartProvider from '../contexts/CartContext/provider';
 
 jest.mock('../components/navigation/RootStack', () =>
@@ -43,17 +44,26 @@ describe('App', () => {
     wrapper.getByTestId('mock-root-stack');
   });
 
-  test('should render status bar', () => {
+  test('should render status bar with correct props', () => {
     (CartProvider as jest.Mock).mockImplementationOnce(
       ({ children }) => children,
     );
 
-    (AppStatusBar as jest.Mock).mockReturnValueOnce(
-      <View testID="mock-status-bar" />,
-    );
+    let statusBarProps!: object;
+
+    (AppStatusBar as jest.Mock).mockImplementationOnce(props => {
+      statusBarProps = props;
+      return <View testID="mock-status-bar" />;
+    });
 
     const wrapper = render(<App />);
 
     wrapper.getByTestId('mock-status-bar');
+
+    expect(statusBarProps).toEqual({
+      translucent: true,
+      backgroundColor: Colors.TRANSPARENT,
+      barStyle: 'dark-content',
+    });
   });
 });
