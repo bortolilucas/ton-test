@@ -40,7 +40,7 @@ describe('ProductsListScreen', () => {
   });
 
   describe('Fetching products succeeds', () => {
-    describe('Items are not empty', () => {
+    describe('List is not empty', () => {
       test('should render list when products length is an odd number', async () => {
         let mockResolve!: (res: Api.FetchProductsResponseType) => void;
 
@@ -118,7 +118,7 @@ describe('ProductsListScreen', () => {
       });
     });
 
-    describe('Item are empty', () => {
+    describe('List is empty', () => {
       test('should render empty list', async () => {
         let mockResolve!: (res: Api.FetchProductsResponseType) => void;
 

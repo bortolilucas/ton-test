@@ -73,7 +73,7 @@ describe('CartScreen', () => {
     expect((list.props as FlatListProps<CartItemType>).data).toEqual(newData);
   });
 
-  test('should remove 1 from qtd when it is 2 or larger', async () => {
+  test('should remove 1 from qtd when it is 2 or greater', async () => {
     let items = CartMockData.defaultItems;
 
     const wrapper = render(<CartScreen />, {
