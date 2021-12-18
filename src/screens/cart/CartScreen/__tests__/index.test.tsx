@@ -6,6 +6,11 @@ import type { CartItemType } from '../../../../contexts/CartContext';
 import type { CartItemsState } from '../../../../contexts/CartContext/provider';
 import { render, fireEvent, act } from '../../../../helpers/testing';
 
+jest.mock(
+  '../../../../hooks/usePersistentState',
+  () => (_: string, value: any) => require('react').useState(value),
+);
+
 describe('CartScreen', () => {
   test('should render no item', () => {
     const wrapper = render(<CartScreen />);

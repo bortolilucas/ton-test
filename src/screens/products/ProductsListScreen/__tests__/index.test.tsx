@@ -8,6 +8,11 @@ import { act, fireEvent, render } from '../../../../helpers/testing';
 
 jest.mock('../../../../api');
 
+jest.mock(
+  '../../../../hooks/usePersistentState',
+  () => (_: string, value: any) => require('react').useState(value),
+);
+
 afterEach(() => {
   (Api.fetchProducts as jest.Mock).mockClear();
 });

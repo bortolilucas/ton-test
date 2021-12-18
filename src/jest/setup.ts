@@ -17,8 +17,3 @@ jest.mock('@react-navigation/native', () => ({
     .fn()
     .mockReturnValue({ navigate: jest.fn(), goBack: jest.fn() }),
 }));
-
-jest.mock(
-  '../hooks/usePersistentState',
-  () => (_: string, value: any) => require('react').useState(value),
-);
