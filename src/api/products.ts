@@ -32,14 +32,10 @@ export type FetchProductsResponseType = {
 export const fetchProducts = async (
   params: FetchProductsParamsType,
 ): Promise<FetchProductsResponseType> => {
-  try {
-    const response = await axiosApi.get<FetchProductsResponseType>(
-      Endpoints.PRODUCTS,
-      { params },
-    );
+  const response = await axiosApi.get<FetchProductsResponseType>(
+    Endpoints.PRODUCTS,
+    { params },
+  );
 
-    return Promise.resolve(response.data);
-  } catch (error: any) {
-    return Promise.reject(error);
-  }
+  return response.data;
 };
